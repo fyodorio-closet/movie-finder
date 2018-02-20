@@ -1,0 +1,20 @@
+{
+  "name": "movie-finder",
+  "version": "1.0.0",
+  "description": "Simple movie info finder",
+  "main": "index.js",
+  "author": "Fyodor Loenko",
+  "license": "MIT",
+  "devDependencies": {
+    "browserify": "*",
+    "gulp": "*",
+    "flux": "*",
+    "reactify": "*",
+    "vinyl-source-stream": "*",
+    "object-assign": "*"
+  },
+  "dependencies": {
+    "react": "^0.14.7",
+    "react-dom": "^0.14.7"
+  }
+}
