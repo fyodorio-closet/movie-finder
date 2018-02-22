@@ -20,6 +20,8 @@ gulp.task('copy', function(){
         .pipe(gulp.dest('dist/js'));
 });
 
+gulp.task('build', ['browserify', 'copy']);
+
 gulp.task('default', ['browserify', 'copy'], function(){
     return gulp.watch('src/**/*.*', ['browserify', 'copy']);
 })
