@@ -20150,7 +20150,7 @@ const MovieResults = React.createClass({displayName: "MovieResults",
     render: function(){
         return(
             React.createElement("div", null, 
-                React.createElement("h3", {className: "text-center"}, "Results"), 
+                React.createElement("h3", {className: "text-center mt-3"}, "Results"), 
                 
                     this.props.movies.map((movie, index) => React.createElement(Movie, {movie: movie, key: index}))
                 
