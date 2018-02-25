@@ -7,7 +7,7 @@ const MovieResults = React.createClass({
     render: function(){
         return(
             <div>
-                <h3 className="text-center">Results</h3>
+                <h3 className="text-center mt-3">Results</h3>
                 {
                     this.props.movies.map((movie, index) => <Movie movie={movie} key={index} />)
                 }
