@@ -20063,11 +20063,12 @@ const AppActions = {
 
 module.exports = AppActions;
 
-},{"../constants/AppConstants":167,"../dispatcher/AppDispatcher":168}],165:[function(require,module,exports){
+},{"../constants/AppConstants":169,"../dispatcher/AppDispatcher":170}],165:[function(require,module,exports){
 const React = require('react');
 const AppActions = require('../actions/AppActions');
 const AppStore = require('../stores/AppStore');
 const SearchForm = require('./SearchForm');
+const MovieResults = require('./MovieResults');
 
 function getAppState() {
     return {
@@ -20086,10 +20087,15 @@ const App = React.createClass({displayName: "App",
         AppStore.removeChangeListener(this._onChange);
     },
     render: function(){
-        console.log(this.state.movies);
+        if (this.state.movies == '') {
+            var movieResults = '';
+        } else {
+            var movieResults = React.createElement(MovieResults, {movies: this.state.movies});
+        }
         return(
             React.createElement("div", null, 
-                React.createElement(SearchForm, null)
+                React.createElement(SearchForm, null), 
+                movieResults
             )
         )
     },
@@ -20100,7 +20106,62 @@ const App = React.createClass({displayName: "App",
 
 module.exports = App;
 
-},{"../actions/AppActions":164,"../stores/AppStore":170,"./SearchForm":166,"react":163}],166:[function(require,module,exports){
+},{"../actions/AppActions":164,"../stores/AppStore":172,"./MovieResults":167,"./SearchForm":168,"react":163}],166:[function(require,module,exports){
+const React = require('react');
+const AppActions = require('../actions/AppActions');
+const AppStore = require('../stores/AppStore');
+
+const Movie = React.createClass({displayName: "Movie",
+    render: function(){
+        let link = `https://www.imdb.com/title/${this.props.movie.imdbID}`;
+        return(
+            React.createElement("div", {className: "card mb-3"}, 
+                React.createElement("div", {className: "card-body row"}, 
+                    React.createElement("div", {className: "col-md-4"}, 
+                        React.createElement("img", {className: "thumbnail", src: this.props.movie.Poster})
+                    ), 
+                    React.createElement("div", {className: "col-md-8"}, 
+                        React.createElement("h4", null, this.props.movie.Title), 
+                        React.createElement("ul", {className: "list-group"}, 
+                            React.createElement("li", {className: "list-group-item"}, 
+                                "Year Released: ", this.props.movie.Year
+                            ), 
+                            React.createElement("li", {className: "list-group-item"}, 
+                                "IMDB ID: ", this.props.movie.imdbID
+                            )
+                        ), 
+                        React.createElement("a", {href: link, className: "btn btn-primary mt-3"}, "View On IMDB")
+                    )
+                )
+            )
+        )
+    }
+});
+
+module.exports = Movie;
+
+},{"../actions/AppActions":164,"../stores/AppStore":172,"react":163}],167:[function(require,module,exports){
+const React = require('react');
+const AppActions = require('../actions/AppActions');
+const AppStore = require('../stores/AppStore');
+const Movie = require('./Movie');
+
+const MovieResults = React.createClass({displayName: "MovieResults",
+    render: function(){
+        return(
+            React.createElement("div", null, 
+                React.createElement("h3", {className: "text-center"}, "Results"), 
+                
+                    this.props.movies.map((movie, index) => React.createElement(Movie, {movie: movie, key: index}))
+                
+            )
+        )
+    }
+});
+
+module.exports = MovieResults;
+
+},{"../actions/AppActions":164,"../stores/AppStore":172,"./Movie":166,"react":163}],168:[function(require,module,exports){
 const React = require('react');
 const AppActions = require('../actions/AppActions');
 const AppStore = require('../stores/AppStore');
@@ -20130,13 +20191,13 @@ const SearchForm = React.createClass({displayName: "SearchForm",
 
 module.exports = SearchForm;
 
-},{"../actions/AppActions":164,"../stores/AppStore":170,"react":163}],167:[function(require,module,exports){
+},{"../actions/AppActions":164,"../stores/AppStore":172,"react":163}],169:[function(require,module,exports){
 module.exports = {
     SEARCH_MOVIES: 'SEARCH_MOVIES',
     RECEIVE_MOVIE_RESULTS: 'RECEIVE_MOVIE_RESULTS'
 }
 
-},{}],168:[function(require,module,exports){
+},{}],170:[function(require,module,exports){
 const Dispatcher = require('flux').Dispatcher;
 const assign = require('object-assign');
 
@@ -20152,7 +20213,7 @@ const AppDispatcher = assign(new Dispatcher(), {
 
 module.exports = AppDispatcher;
 
-},{"flux":29,"object-assign":32}],169:[function(require,module,exports){
+},{"flux":29,"object-assign":32}],171:[function(require,module,exports){
 const App = require('./components/App');
 const React = require('react');
 const ReactDOM = require('react-dom');
@@ -20163,7 +20224,7 @@ ReactDOM.render(
     document.getElementById('app')
 )
 
-},{"./components/App":165,"./utils/appApi":171,"react":163,"react-dom":34}],170:[function(require,module,exports){
+},{"./components/App":165,"./utils/appApi":173,"react":163,"react-dom":34}],172:[function(require,module,exports){
 const AppDispatcher = require('../dispatcher/AppDispatcher');
 const AppConstants = require('../constants/AppConstants');
 const EventEmitter = require('events').EventEmitter;
@@ -20213,7 +20274,7 @@ AppDispatcher.register(function(payload) {
 
 module.exports = AppStore;
 
-},{"../constants/AppConstants":167,"../dispatcher/AppDispatcher":168,"../utils/appApi":171,"events":1,"object-assign":32}],171:[function(require,module,exports){
+},{"../constants/AppConstants":169,"../dispatcher/AppDispatcher":170,"../utils/appApi":173,"events":1,"object-assign":32}],173:[function(require,module,exports){
 const AppActions = require('../actions/AppActions');
 const ApiKey = '10ff6c56';
 const ApiURL = `https://www.omdbapi.com/?apikey=${ApiKey}&s=`;
@@ -20234,4 +20295,4 @@ module.exports = {
     }
 }
 
-},{"../actions/AppActions":164}]},{},[169]);
+},{"../actions/AppActions":164}]},{},[171]);
